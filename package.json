@@ -1,0 +1,209 @@
+{
+  "name": "codex-switch",
+  "displayName": "Codex Switch",
+  "description": "Switch Codex base_url and OPENAI_API_KEY profiles from VS Code.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/hrwkko/codex-switch.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:codexSwitch.switchProfile",
+    "onCommand:codexSwitch.addProfile",
+    "onCommand:codexSwitch.addFromCurrent",
+    "onCommand:codexSwitch.selectCodexDirectory",
+    "onCommand:codexSwitch.renameProfile",
+    "onCommand:codexSwitch.deleteProfile",
+    "onCommand:codexSwitch.openProfilesFile",
+    "onCommand:codexSwitch.refresh",
+    "onCommand:codexSwitch.reloadWindow",
+    "onCommand:codexSwitch.applyProfileFromTree",
+    "onView:codexSwitchProfiles"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codexSwitch.switchProfile",
+        "title": "Codex Switch: Switch Profile",
+        "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "codexSwitch.addProfile",
+        "title": "Codex Switch: Add Profile",
+        "icon": "$(add)"
+      },
+      {
+        "command": "codexSwitch.addFromCurrent",
+        "title": "Codex Switch: Add Profile From Current",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "codexSwitch.selectCodexDirectory",
+        "title": "Codex Switch: Select Codex Directory",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "codexSwitch.renameProfile",
+        "title": "Codex Switch: Rename Profile",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "codexSwitch.deleteProfile",
+        "title": "Codex Switch: Delete Profile",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "codexSwitch.openProfilesFile",
+        "title": "Codex Switch: Open Profiles File",
+        "icon": "$(json)"
+      },
+      {
+        "command": "codexSwitch.refresh",
+        "title": "Codex Switch: Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "codexSwitch.reloadWindow",
+        "title": "Codex Switch: Reload VS Code Window",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "codexSwitch.applyProfileFromTree",
+        "title": "Codex Switch: Apply Profile",
+        "icon": "$(play)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codexSwitch",
+          "title": "Codex Switch",
+          "icon": "resources/codex-switch.svg"
+        }
+      ]
+    },
+    "views": {
+      "codexSwitch": [
+        {
+          "id": "codexSwitchProfiles",
+          "name": "Profiles"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Codex Switch",
+      "properties": {
+        "codexSwitch.autoReloadWindow": {
+          "type": "boolean",
+          "default": true,
+          "description": "Reload the current VS Code window automatically after switching Codex profile."
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "codexSwitch.switchProfile"
+        },
+        {
+          "command": "codexSwitch.addProfile"
+        },
+        {
+          "command": "codexSwitch.addFromCurrent"
+        },
+        {
+          "command": "codexSwitch.selectCodexDirectory"
+        },
+        {
+          "command": "codexSwitch.renameProfile"
+        },
+        {
+          "command": "codexSwitch.deleteProfile"
+        },
+        {
+          "command": "codexSwitch.openProfilesFile"
+        },
+        {
+          "command": "codexSwitch.refresh"
+        },
+        {
+          "command": "codexSwitch.reloadWindow"
+        },
+        {
+          "command": "codexSwitch.applyProfileFromTree",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "codexSwitch.switchProfile",
+          "when": "view == codexSwitchProfiles",
+          "group": "navigation@0"
+        },
+        {
+          "command": "codexSwitch.addProfile",
+          "when": "view == codexSwitchProfiles",
+          "group": "navigation@1"
+        },
+        {
+          "command": "codexSwitch.addFromCurrent",
+          "when": "view == codexSwitchProfiles",
+          "group": "navigation@2"
+        },
+        {
+          "command": "codexSwitch.selectCodexDirectory",
+          "when": "view == codexSwitchProfiles",
+          "group": "navigation@3"
+        },
+        {
+          "command": "codexSwitch.refresh",
+          "when": "view == codexSwitchProfiles",
+          "group": "navigation@4"
+        },
+        {
+          "command": "codexSwitch.reloadWindow",
+          "when": "view == codexSwitchProfiles",
+          "group": "navigation@5"
+        },
+        {
+          "command": "codexSwitch.openProfilesFile",
+          "when": "view == codexSwitchProfiles",
+          "group": "navigation@6"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "codexSwitch.applyProfileFromTree",
+          "when": "view == codexSwitchProfiles && viewItem == codexSwitch.profile",
+          "group": "inline"
+        },
+        {
+          "command": "codexSwitch.renameProfile",
+          "when": "view == codexSwitchProfiles && viewItem == codexSwitch.profile",
+          "group": "inline"
+        },
+        {
+          "command": "codexSwitch.deleteProfile",
+          "when": "view == codexSwitchProfiles && viewItem == codexSwitch.profile",
+          "group": "inline"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "package": "npx @vscode/vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.9.2"
+  }
+}

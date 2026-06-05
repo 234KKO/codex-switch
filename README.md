@@ -1,73 +1,82 @@
 # Codex Switch
 
-一个简单的 Windows 桌面工具，用来切换 Codex 配置中的两个值：
+在 VS Code 里一键切换 Codex 配置。
 
-- `config.toml` 里的 `base_url`
-- `auth.json` 里的 `OPENAI_API_KEY`
+插件会管理：
 
-一个配置由“名称、基础地址、密钥”组成。切换配置时，程序会把选中的基础地址和密钥写回当前选择的 Codex 配置目录。
+- `%USERPROFILE%\.codex\config.toml` 里的 `base_url`
+- `%USERPROFILE%\.codex\auth.json` 里的 `OPENAI_API_KEY`
 
-程序启动时会自动读取当前 Codex 配置目录里的现有配置。如果配置列表里还没有 `default`，会把当前文件中的 `base_url` 和 `OPENAI_API_KEY` 自动保存成名为 `default` 的配置，方便切换出去以后再切回原始配置。已有 `default` 时不会覆盖。
+一个配置由名称、基础地址、密钥组成。启动时，如果配置列表里没有 `default`，插件会自动把当前 Codex 文件里的配置导入成 `default`。
 
-## 默认目录
+## 使用方式
 
-程序默认使用当前 Windows 用户目录下的：
-
-```text
-%USERPROFILE%\.codex
-```
-
-例如在本机通常是：
+安装插件后，VS Code 左侧 Activity Bar 会出现 **Codex Switch** 入口。点开后可以看到配置列表：
 
 ```text
-C:\Users\28717\.codex
+✓ default
+  work
+  new
 ```
 
-发给别人使用时，会自动使用对方自己的用户目录。也可以在界面顶部手动输入或选择其他 `.codex` 文件夹。
+点击某个配置即可切换。切换后，插件会写入 Codex 配置文件，并根据设置自动重载当前 VS Code 窗口，让 Codex 扩展重新读取配置。
 
-## 运行源码
-
-```powershell
-python codex_switch.py
-```
-
-## 打包 EXE
-
-```powershell
-.\build_exe.ps1
-```
-
-打包完成后，程序位于：
+左下角状态栏也会显示当前配置：
 
 ```text
-dist\CodexSwitch.exe
+Codex: default
 ```
 
-## 数据保存位置
+点击状态栏同样可以打开快速选择列表。
 
-配置列表和上次选择的 Codex 配置目录默认保存到：
+## 命令
+
+- `Codex Switch: Switch Profile`
+- `Codex Switch: Add Profile From Current`
+- `Codex Switch: Select Codex Directory`
+- `Codex Switch: Delete Profile`
+- `Codex Switch: Open Profiles File`
+- `Codex Switch: Refresh`
+
+侧边栏标题栏也提供常用按钮：
+
+- 切换配置
+- 添加配置
+- 从当前文件导入配置
+- 选择 Codex 配置目录
+- 刷新
+- 重载 VS Code 窗口
+- 打开 profiles.json
+
+配置列表里的每一项也可以直接点击切换。当前配置会显示勾选图标。
+
+右键配置项可以：
+
+- 切换
+- 重命名
+- 删除
+
+## 设置
+
+```json
+{
+  "codexSwitch.autoReloadWindow": true
+}
+```
+
+为 `true` 时，切换配置后自动执行 VS Code 的窗口重载命令。为 `false` 时，切换后会询问是否立即重载。
+
+## 数据文件
+
+配置列表保存到：
 
 ```text
 %USERPROFILE%\.codex-switch\profiles.json
 ```
 
-首次切换配置前，程序会自动备份原始文件：
+首次切换前会自动备份：
 
 ```text
 %USERPROFILE%\.codex\config.toml.bak
 %USERPROFILE%\.codex\auth.json.bak
 ```
-
-如果你在界面里选择了其他 Codex 配置目录，备份文件会创建在对应目录下。
-
-## 界面操作
-
-1. 顶部确认或选择 Codex 配置目录。
-2. 查看“当前文件配置”，确认当前 `base_url` 和密钥。
-3. 左侧列表会自动出现 `default`，代表程序首次读取到的原始配置。
-4. 填写名称、基础地址、密钥。
-5. 点击“保存配置”。
-6. 从左侧列表选择一个配置。
-7. 点击“切换”。
-
-也可以点击“从当前文件导入”，把当前 `.codex` 文件里的值保存成一个新配置。
